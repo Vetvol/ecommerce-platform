@@ -26,18 +26,6 @@ export default async function AdminPage() {
       take: 10
     }),
     db.order.findMany({
-      include: {
-        user: {
-          select: { name: true, email: true }
-        },
-        items: {
-          include: {
-            product: {
-              select: { name: true }
-            }
-          }
-        }
-      },
       orderBy: { createdAt: 'desc' },
       take: 10
     })

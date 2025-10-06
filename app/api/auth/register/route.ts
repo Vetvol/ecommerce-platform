@@ -47,13 +47,6 @@ export async function POST(request: NextRequest) {
         email,
         password: hashedPassword,
         role: 'USER', // Default role for new users
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        createdAt: true,
       }
     })
 

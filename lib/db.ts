@@ -25,7 +25,7 @@ export const query = async (text: string, params?: any[]) => {
   return pool.query(text, params)
 }
 
-// Database helper functions
+// Database helper functions that match your Neon schema
 export const db = {
   user: {
     findUnique: async (where: { where: { email: string } }) => {
@@ -34,9 +34,10 @@ export const db = {
     },
     create: async (data: { data: { name: string; email: string; password: string; role: string } }) => {
       const { name, email, password, role } = data.data
+      const id = crypto.randomUUID()
       const result = await query(
         'INSERT INTO "User" (id, name, email, password, role, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, NOW(), NOW()) RETURNING id, name, email, role, "createdAt"',
-        [crypto.randomUUID(), name, email, password, role]
+        [id, name, email, password, role]
       )
       return result.rows[0]
     },
@@ -90,7 +91,7 @@ export const db = {
     }
   },
   order: {
-    findMany: async (options?: { where?: { userId: string }; include?: any; orderBy?: { createdAt: string }; take?: number }) => {
+    findMany: async (options?: { where?: { userId: string }; orderBy?: { createdAt: string }; take?: number }) => {
       let queryText = 'SELECT * FROM "Order"'
       const params: any[] = []
       let paramCount = 0

@@ -20,18 +20,6 @@ export default async function DashboardPage() {
     where: {
       userId: session.user.id
     },
-    include: {
-      items: {
-        include: {
-          product: {
-            select: {
-              name: true,
-              image: true
-            }
-          }
-        }
-      }
-    },
     orderBy: {
       createdAt: 'desc'
     }

@@ -9,14 +9,7 @@ interface Order {
   status: string
   total: number
   createdAt: Date
-  items: Array<{
-    quantity: number
-    price: number
-    product: {
-      name: string
-      image: string | null
-    }
-  }>
+  userId: string
 }
 
 interface User {
@@ -127,25 +120,7 @@ export default function CustomerDashboard({ orders, user }: CustomerDashboardPro
                     </div>
                     
                     <div className="border-t pt-4">
-                      <h4 className="text-sm font-medium text-gray-900 mb-2">Items:</h4>
-                      <div className="space-y-2">
-                        {order.items.map((item, index) => (
-                          <div key={index} className="flex justify-between items-center text-sm">
-                            <div className="flex items-center">
-                              {item.product.image && (
-                                <img 
-                                  src={item.product.image} 
-                                  alt={item.product.name}
-                                  className="h-8 w-8 rounded object-cover mr-3"
-                                />
-                              )}
-                              <span className="text-gray-900">{item.product.name}</span>
-                              <span className="text-gray-500 ml-2">x{item.quantity}</span>
-                            </div>
-                            <span className="text-gray-900">{formatCurrency(item.price * item.quantity)}</span>
-                          </div>
-                        ))}
-                      </div>
+                      <p className="text-sm text-gray-500">Order details will be available soon.</p>
                     </div>
                   </div>
                 ))}

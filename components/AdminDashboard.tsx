@@ -27,17 +27,7 @@ interface Order {
   status: string
   total: number
   createdAt: Date
-  user: {
-    name: string | null
-    email: string
-  }
-  items: Array<{
-    quantity: number
-    price: number
-    product: {
-      name: string
-    }
-  }>
+  userId: string
 }
 
 interface Stats {
@@ -296,8 +286,8 @@ export default function AdminDashboard({ products, users, orders, stats }: Admin
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
-                          <div className="text-sm font-medium text-gray-900">{order.user.name}</div>
-                          <div className="text-sm text-gray-500">{order.user.email}</div>
+                          <div className="text-sm font-medium text-gray-900">User ID: {order.userId}</div>
+                          <div className="text-sm text-gray-500">Details coming soon</div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
