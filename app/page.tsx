@@ -4,6 +4,12 @@ import { db } from '@/lib/db'
 
 async function getProducts() {
   try {
+    // Check if database is available
+    if (!process.env.DATABASE_URL) {
+      console.log('No database URL found, returning empty products')
+      return []
+    }
+    
     const products = await db.product.findMany({
       where: {
         featured: true
