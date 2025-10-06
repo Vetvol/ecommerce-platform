@@ -1,11 +1,10 @@
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import AdminDashboard from '@/components/AdminDashboard'
 
 export default async function AdminPage() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession()
 
   // Redirect if not authenticated or not admin
   if (!session || session.user.role !== 'ADMIN') {
