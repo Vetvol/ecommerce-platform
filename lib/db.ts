@@ -6,7 +6,7 @@ const createPool = () => {
   console.log('DATABASE_URL length:', process.env.DATABASE_URL?.length || 0)
   
   // Temporary hardcoded connection string for testing
-  const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_oduGLvThml90@ep-ancient-waterfall-adof470u-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+  const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_oduGLvThml90@ep-ancient-waterfall-adof470u-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require'
   
   if (!connectionString) {
     console.warn('No database connection string available')
@@ -19,7 +19,11 @@ const createPool = () => {
       connectionString: connectionString,
       ssl: {
         rejectUnauthorized: false
-      }
+      },
+      // Additional connection options for Neon
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
     })
     console.log('Database pool created successfully')
     return pool
