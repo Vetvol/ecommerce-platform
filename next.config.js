@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'images.unsplash.com'],
+  },
+  // Disable build traces completely
+  experimental: {
+    outputFileTracingRoot: undefined,
   },
 }
 
