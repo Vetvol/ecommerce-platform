@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
+// Force fresh build
+
 export async function GET() {
   try {
     if (!db) {
