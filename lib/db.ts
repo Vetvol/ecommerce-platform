@@ -5,15 +5,18 @@ const createPool = () => {
   console.log('Checking DATABASE_URL:', process.env.DATABASE_URL ? 'EXISTS' : 'NOT FOUND')
   console.log('DATABASE_URL length:', process.env.DATABASE_URL?.length || 0)
   
-  if (!process.env.DATABASE_URL) {
-    console.warn('DATABASE_URL not found, database connection will not be created')
+  // Temporary hardcoded connection string for testing
+  const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_oduGLvThml90@ep-ancient-waterfall-adof470u-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+  
+  if (!connectionString) {
+    console.warn('No database connection string available')
     console.warn('Available env vars:', Object.keys(process.env).filter(key => key.includes('DATABASE')))
     return null
   }
   
   try {
     const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: connectionString,
       ssl: {
         rejectUnauthorized: false
       }
