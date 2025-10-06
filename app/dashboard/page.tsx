@@ -35,6 +35,14 @@ export default async function DashboardPage() {
   })
 
   return (
-    <CustomerDashboard orders={orders} user={session.user} />
+    <CustomerDashboard 
+      orders={orders} 
+      user={{
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.name || null,
+        role: session.user.role
+      }} 
+    />
   )
 }
