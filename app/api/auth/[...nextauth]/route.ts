@@ -1,21 +1,19 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import type { CredentialsConfig } from 'next-auth/providers/credentials'
 
 // Disable static generation for this route
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-// Create credentials provider with explicit typing
-const credentialsProvider: CredentialsConfig = {
-  id: 'credentials',
-  name: 'credentials',
-  type: 'credentials',
-  credentials: {
-    email: { label: 'Email', type: 'email' },
-    password: { label: 'Password', type: 'password' }
-  },
-  async authorize(credentials) {
+const handler = NextAuth({
+  providers: [
+    CredentialsProvider({
+      name: 'credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' }
+      },
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null
         }
@@ -62,22 +60,19 @@ const credentialsProvider: CredentialsConfig = {
           return null
         }
       }
-}
-
-// Create auth options with proper typing
-const authOptions: NextAuthOptions = {
-  providers: [credentialsProvider],
+    })
+  ],
   session: {
     strategy: 'jwt'
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.role = user.role
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (token) {
         session.user.id = token.sub!
         session.user.role = token.role as string
@@ -89,8 +84,6 @@ const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
   },
   secret: process.env.NEXTAUTH_SECRET,
-}
-
-const handler = NextAuth(authOptions)
+})
 
 export { handler as GET, handler as POST }
