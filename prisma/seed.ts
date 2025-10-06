@@ -7,16 +7,21 @@ async function main() {
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 12)
   
-  const admin = await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
-    update: {},
-    create: {
-      email: 'admin@example.com',
-      name: 'Admin User',
-      password: hashedPassword,
-      role: 'ADMIN',
-    },
+  // Check if admin user already exists
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: 'admin@example.com' }
   })
+
+  if (!existingAdmin) {
+    await prisma.user.create({
+      data: {
+        email: 'admin@example.com',
+        name: 'Admin User',
+        password: hashedPassword,
+        role: 'ADMIN',
+      },
+    })
+  }
 
   // Create sample products
   const products = [
@@ -77,11 +82,16 @@ async function main() {
   ]
 
   for (const product of products) {
-    await prisma.product.upsert({
-      where: { name: product.name },
-      update: {},
-      create: product,
+    // Check if product already exists
+    const existingProduct = await prisma.product.findFirst({
+      where: { name: product.name }
     })
+
+    if (!existingProduct) {
+      await prisma.product.create({
+        data: product,
+      })
+    }
   }
 
   console.log('Database seeded successfully!')
