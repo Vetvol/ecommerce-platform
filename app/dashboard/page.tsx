@@ -13,6 +13,10 @@ export default async function DashboardPage() {
   }
 
   // Get user's orders
+  if (!db) {
+    redirect('/')
+  }
+
   const orders = await db.order.findMany({
     where: {
       userId: session.user.id

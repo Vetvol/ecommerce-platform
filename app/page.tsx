@@ -5,7 +5,7 @@ import { db } from '@/lib/db'
 async function getProducts() {
   try {
     // Check if database is available
-    if (!process.env.DATABASE_URL) {
+    if (!process.env.DATABASE_URL || !db) {
       console.log('No database URL found, returning empty products')
       return []
     }

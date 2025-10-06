@@ -1,7 +1,5 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import bcrypt from 'bcryptjs'
-import { db } from './db'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -16,7 +14,16 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
+        // For build-time, return a mock user to prevent build errors
+        if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+          return null
+        }
+
         try {
+          // Dynamic import to prevent build-time database access
+          const { db } = await import('./db')
+          const bcrypt = await import('bcryptjs')
+
           const user = await db.user.findUnique({
             where: {
               email: credentials.email

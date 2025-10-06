@@ -13,6 +13,10 @@ export default async function AdminPage() {
   }
 
   // Get dashboard data
+  if (!db) {
+    redirect('/')
+  }
+
   const [products, users, orders] = await Promise.all([
     db.product.findMany({
       orderBy: { createdAt: 'desc' },
