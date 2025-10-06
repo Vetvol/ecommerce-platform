@@ -64,7 +64,7 @@ export const db = {
       const params: any[] = []
       
       if (options?.orderBy) {
-        queryText += ` ORDER BY "${options.orderBy.createdAt}" DESC`
+        queryText += ` ORDER BY "createdAt" DESC`
       }
       
       if (options?.take) {
@@ -92,7 +92,7 @@ export const db = {
       }
       
       if (options?.orderBy) {
-        queryText += ` ORDER BY "${options.orderBy.createdAt}" DESC`
+        queryText += ` ORDER BY "createdAt" DESC`
       }
       
       if (options?.take) {
@@ -120,7 +120,7 @@ export const db = {
       }
       
       if (options?.orderBy) {
-        queryText += ` ORDER BY "${options.orderBy.createdAt}" DESC`
+        queryText += ` ORDER BY "createdAt" DESC`
       }
       
       if (options?.take) {
