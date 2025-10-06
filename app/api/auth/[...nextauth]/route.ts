@@ -1,20 +1,21 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import type { CredentialsConfig } from 'next-auth/providers/credentials'
 
 // Disable static generation for this route
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-// Create auth options with proper typing
-const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      name: 'credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
-      },
-      async authorize(credentials) {
+// Create credentials provider with explicit typing
+const credentialsProvider: CredentialsConfig = {
+  id: 'credentials',
+  name: 'credentials',
+  type: 'credentials',
+  credentials: {
+    email: { label: 'Email', type: 'email' },
+    password: { label: 'Password', type: 'password' }
+  },
+  async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null
         }
@@ -61,8 +62,11 @@ const authOptions: NextAuthOptions = {
           return null
         }
       }
-    })
-  ],
+}
+
+// Create auth options with proper typing
+const authOptions: NextAuthOptions = {
+  providers: [credentialsProvider],
   session: {
     strategy: 'jwt'
   },
