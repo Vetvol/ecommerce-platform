@@ -3,6 +3,13 @@ import { db } from '@/lib/db'
 
 export async function GET() {
   try {
+    if (!db) {
+      return NextResponse.json(
+        { message: 'Database not available' },
+        { status: 500 }
+      )
+    }
+
     const products = await db.product.findMany({
       orderBy: {
         createdAt: 'desc'
