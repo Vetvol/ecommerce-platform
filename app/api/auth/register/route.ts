@@ -17,6 +17,14 @@ export async function POST(request: NextRequest) {
     const validatedData = registerSchema.parse(body)
     const { name, email, password } = validatedData
 
+    // Check if database is available
+    if (!db) {
+      return NextResponse.json(
+        { message: 'Database not available' },
+        { status: 500 }
+      )
+    }
+
     // Check if user already exists
     const existingUser = await db.user.findUnique({
       where: { email }
