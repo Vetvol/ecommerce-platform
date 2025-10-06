@@ -2,17 +2,28 @@ import { Pool } from 'pg'
 
 // Create a connection pool to your Neon database
 const createPool = () => {
+  console.log('Checking DATABASE_URL:', process.env.DATABASE_URL ? 'EXISTS' : 'NOT FOUND')
+  console.log('DATABASE_URL length:', process.env.DATABASE_URL?.length || 0)
+  
   if (!process.env.DATABASE_URL) {
     console.warn('DATABASE_URL not found, database connection will not be created')
+    console.warn('Available env vars:', Object.keys(process.env).filter(key => key.includes('DATABASE')))
     return null
   }
   
-  return new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  })
+  try {
+    const pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    })
+    console.log('Database pool created successfully')
+    return pool
+  } catch (error) {
+    console.error('Failed to create database pool:', error)
+    return null
+  }
 }
 
 export const pool = createPool()
