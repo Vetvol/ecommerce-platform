@@ -1,22 +1,21 @@
 import NextAuth from 'next-auth'
-import { NextRequest } from 'next/server'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import type { NextAuthOptions } from 'next-auth'
 
 // Disable static generation for this route
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 // Create auth options inline to avoid build-time issues
-const authOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
-    {
-      id: 'credentials',
+    CredentialsProvider({
       name: 'credentials',
-      type: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize(credentials: any) {
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null
         }
@@ -63,19 +62,19 @@ const authOptions = {
           return null
         }
       }
-    }
+    })
   ],
   session: {
-    strategy: 'jwt' as const
+    strategy: 'jwt'
   },
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }) {
       if (user) {
         token.role = user.role
       }
       return token
     },
-    async session({ session, token }: any) {
+    async session({ session, token }) {
       if (token) {
         session.user.id = token.sub!
         session.user.role = token.role as string
