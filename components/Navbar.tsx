@@ -40,6 +40,13 @@ export default function Navbar() {
                     <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Admin</span>
                   )}
                 </div>
+                <Link
+                  href={session.user?.role === 'ADMIN' ? '/admin' : '/dashboard'}
+                  className="text-gray-700 hover:text-indigo-600 p-2 rounded-md transition-colors"
+                  title="Dashboard"
+                >
+                  <User className="h-5 w-5" />
+                </Link>
                 <button
                   onClick={() => signOut()}
                   className="text-gray-700 hover:text-red-600 p-2 rounded-md transition-colors"
